@@ -11,18 +11,18 @@ class ProdutoController extends Controller
     public function lista()
     {
     	$produtos = DB::table('produtos')->select()->get();
-    	return view('listagem')->withProdutos($produtos);
+    	return view('produto.listagem')->withProdutos($produtos);
     }
 
-    public function mostra()
+    public function mostra(Request $request)
     {
-    	$id = request()->route()->parameters['id'];
+    	$id = $request->input("id", '0');
     	$detalhes = DB::table('produtos')->where('id', '=', $id)->get();
 
-        if (!request()->is('id')) {
+        if (!$request->has('id')) {
             return "Esse produto nao existe!!!";
-        }else{
-            return view('detalhes')->with('p', $detalhes[0]);
         }
+
+     	return view('produto.detalhes')->with('p', $detalhes[0]);
     }
 }
